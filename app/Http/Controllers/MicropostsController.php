@@ -56,5 +56,28 @@ class MicropostsController extends Controller
         // 前のURLへリダイレクトさせる
         return back();
     }
+    
+    // * ユーザのフォロワー一覧ページを表示するアクション。
+    //  *
+    //  * @param  $id  ユーザのid
+    //  * @return \Illuminate\Http\Response
+    //  */
+    public function favoriters($id)
+    {
+        // idの値でユーザを検索して取得
+        $user = User::findOrFail($id);
+
+        // 関係するモデルの件数をロード
+        $user->loadRelationshipCounts();
+
+        // ユーザのフォロワー一覧を取得
+        $favoriters = $user->favoriters()->paginate(10);
+
+        // フォロワー一覧ビューでそれらを表示
+        return view('users.favoriters', [
+            'user' => $user,
+            'users' => $favoriters,
+        ]);
+    }
 
 }
