@@ -62,6 +62,31 @@ class MicropostsController extends Controller
     //  * @param  $id  ユーザのid
     //  * @return \Illuminate\Http\Response
     //  */
+    
+    /**
+     * お気に入り機能の実装
+     *
+     * @param  $id  ユーザのid
+     * @return \Illuminate\Http\Response
+     */
+    public function favoritings($id)
+    {
+        // idの値でユーザを検索して取得
+        $user = User::findOrFail($id);
+
+        // 関係するモデルの件数をロード
+        $user->loadRelationshipCounts();
+
+        // ユーザのフォロー一覧を取得
+        $favoritings = $user->favoritings()->paginate(10);
+
+        // フォロー一覧ビューでそれらを表示
+        return view('users.favoriting', [
+            'user' => $user,
+            'users' => $favoritings,
+        ]);
+    }
+
     public function favoriters($id)
     {
         // idの値でユーザを検索して取得

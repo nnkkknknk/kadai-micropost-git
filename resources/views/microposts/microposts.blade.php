@@ -16,8 +16,10 @@
                     </div>
                 </div>
             </li>
+             @include('favorite.favorite_button')
         @endforeach
     </ul>
     {{-- ページネーションのリンク --}}
     {{ $microposts->links() }}
+    
 @endif
